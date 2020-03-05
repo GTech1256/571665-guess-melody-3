@@ -25,6 +25,7 @@ it(`<GenreQuestionScreen /> should render correct`, () => {
     <GenreQuestionScreen
       question={question}
       onAnswer={() => {}}
+      renderPlayer={() => {}}
     />
   ),
   {

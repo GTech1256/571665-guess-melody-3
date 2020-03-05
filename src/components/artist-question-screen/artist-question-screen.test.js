@@ -24,8 +24,9 @@ const question = {
 it(`ArtistQuestionScreen is rendered correctly`, () => {
   const tree = renderer.create((
     <ArtistQuestionScreen
-      question={question}
       onAnswer={() => {}}
+      question={question}
+      renderPlayer={() => {}}
     />
   ),
   {
