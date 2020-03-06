@@ -22,18 +22,18 @@ export default class AudioPlayer extends PureComponent {
 
     audio.src = src;
 
-    audio.oncanplay = () => this.setState({
-      isLoading: false
+    audio.oncanplaythrough = () => this.setState({
+      isLoading: false,
     });
 
     audio.onplay = () => {
       this.setState({
-        isPlaying: true
+        isPlaying: true,
       });
     };
 
     audio.onpause = () => this.setState({
-      isPlaying: false
+      isPlaying: false,
     });
 
     audio.ontimeupdate = () => this.setState({
@@ -50,11 +50,13 @@ export default class AudioPlayer extends PureComponent {
     audio.ontimeupdate = null;
     audio.src = ``;
   }
-
   handleButtonPlayClick() {
     const {onPlayButtonClick} = this.props;
 
-    this.setState({isPlaying: !this.state.isPlaying});
+    this.setState((state) => ({
+      isPlaying: !state.isPlaying
+    }));
+
     onPlayButtonClick();
   }
 
@@ -79,7 +81,7 @@ export default class AudioPlayer extends PureComponent {
   componentDidUpdate() {
     const audio = this._audioRef.current;
 
-    if (this.state.isPlaying) {
+    if (this.props.isPlaying) {
       audio.play();
     } else {
       audio.pause();

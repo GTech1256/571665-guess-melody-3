@@ -20,15 +20,16 @@ const withActivePlayer = (Component) => {
         <AudioPlayer
           src={src}
           isPlaying={id === activePlayerId}
-          onPlayButtonClick={this.handlePlayButtonClick.bind(this, activePlayerId, id)}
+          onPlayButtonClick={this.handlePlayButtonClick.bind(this, id)}
         />
       );
     }
 
-    handlePlayButtonClick(activePlayerId, id) {
-      this.setState({
-        activePlayerId: activePlayerId === id ? -1 : id
-      });
+    handlePlayButtonClick(id) {
+
+      this.setState((state) => ({
+        activePlayerId: state.activePlayerId === id ? -1 : id
+      }));
     }
 
     render() {
