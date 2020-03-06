@@ -86,6 +86,10 @@ export default class AudioPlayer extends PureComponent {
     } else {
       audio.pause();
     }
+
+    this.setState({
+      isPlaying: this.props.isPlaying
+    });
   }
 }
 

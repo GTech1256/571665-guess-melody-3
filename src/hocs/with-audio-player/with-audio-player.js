@@ -9,20 +9,6 @@ const withActivePlayer = (Component) => {
       this.state = {
         activePlayerId: 0,
       };
-
-      this.renderPlayer = this.renderPlayer.bind(this);
-    }
-
-    renderPlayer(src, id) {
-      const {activePlayerId} = this.state;
-
-      return (
-        <AudioPlayer
-          src={src}
-          isPlaying={id === activePlayerId}
-          onPlayButtonClick={this.handlePlayButtonClick.bind(this, id)}
-        />
-      );
     }
 
     handlePlayButtonClick(id) {
@@ -35,7 +21,17 @@ const withActivePlayer = (Component) => {
     render() {
       return <Component
         {...this.props}
-        renderPlayer={this.renderPlayer}
+        renderPlayer={(src, id) => {
+          const {activePlayerId} = this.state;
+
+          return (
+            <AudioPlayer
+              src={src}
+              isPlaying={id === activePlayerId}
+              onPlayButtonClick={this.handlePlayButtonClick.bind(this, id)}
+            />
+          );
+        }}
       />;
     }
   }
