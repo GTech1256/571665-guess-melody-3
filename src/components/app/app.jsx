@@ -18,6 +18,21 @@ class App extends PureComponent {
     this.state = {
       step: -1,
     };
+
+    this.handleWelcomeButtonClick = this.handleWelcomeButtonClick.bind(this);
+    this.handleAnswer = this.handleAnswer.bind(this);
+  }
+
+  handleWelcomeButtonClick() {
+    this.setState({
+      step: 0,
+    });
+  }
+
+  handleAnswer() {
+    this.setState((prevState) => ({
+      step: prevState.step + 1,
+    }));
   }
 
   _renderGameScreen() {
@@ -29,11 +44,7 @@ class App extends PureComponent {
       return (
         <WelcomeScreen
           errorsCount={errorsCount}
-          onWelcomeButtonClick={() => {
-            this.setState({
-              step: 0,
-            });
-          }}
+          onWelcomeButtonClick={this.handleWelcomeButtonClick}
         />
       );
     }
@@ -47,11 +58,7 @@ class App extends PureComponent {
             >
               <ArtistQuestionScreenWrapped
                 question={question}
-                onAnswer={() => {
-                  this.setState((prevState) => ({
-                    step: prevState.step + 1,
-                  }));
-                }}
+                onAnswer={this.handleAnswer}
               />
             </GameScreen>
           );
@@ -62,11 +69,7 @@ class App extends PureComponent {
             >
               <GenreQuestionScreenWrapped
                 question={question}
-                onAnswer={() => {
-                  this.setState((prevState) => ({
-                    step: prevState.step + 1,
-                  }));
-                }}
+                onAnswer={this.handleAnswer}
               />
             </GameScreen>
           );
