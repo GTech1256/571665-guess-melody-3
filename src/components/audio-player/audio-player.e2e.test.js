@@ -9,7 +9,7 @@ const mock = {
   src: ``,
 };
 
-it(`<AudioPlayer /> should change state on function call`, async () => {
+it(`<AudioPlayer /> should change state on function call`, () => {
   const onPlayButtonClick = jest.fn(() => {});
   const props = Object.assign(
       {},
@@ -23,27 +23,30 @@ it(`<AudioPlayer /> should change state on function call`, async () => {
     {...props}
   />);
 
-  await audioPlayerWrapper.setState({ isLoading: false })
-
-  expect(audioPlayerWrapper.state().isPlaying).toBeFalsy();
-
   const audioPlayerBtn = audioPlayerWrapper
-    .find(`button.track__button`);
-    
-  const simulateClick = async () => {
+      .find(`button.track__button`);
+
+  const simulateClick = (cb) => {
     audioPlayerBtn.prop(`onClick`)();
-    await audioPlayerWrapper.setProps({ isPlaying: !audioPlayerWrapper.prop('isPlaying')})
-    await audioPlayerWrapper.update()
-  }
+    audioPlayerWrapper.setProps(
+        {isPlaying: !audioPlayerWrapper.prop(`isPlaying`)},
+        () => {
+          audioPlayerWrapper.update();
+          cb();
+        }
+    );
+  };
 
+  audioPlayerWrapper.setState({isLoading: false}, () => {
+    expect(audioPlayerWrapper.state().isPlaying).toBeFalsy();
 
-  await simulateClick()
-
-  expect(onPlayButtonClick.mock.calls.length).toBe(1);
-  expect(audioPlayerWrapper.state().isPlaying).toBeTruthy();
-
-  await simulateClick()
-
-  expect(onPlayButtonClick.mock.calls.length).toBe(2);
-  expect(audioPlayerWrapper.state().isPlaying).toBeFalsy();
+    simulateClick(() => {
+      expect(onPlayButtonClick.mock.calls.length).toBe(1);
+      expect(audioPlayerWrapper.state().isPlaying).toBeTruthy();
+      simulateClick(() => {
+        expect(onPlayButtonClick.mock.calls.length).toBe(2);
+        expect(audioPlayerWrapper.state().isPlaying).toBeFalsy();
+      });
+    });
+  });
 });
